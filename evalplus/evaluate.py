@@ -263,7 +263,8 @@ def evaluate(flags):
                 if flags.dataset == "mbpp":
                     base_fail_tests = mbpp_serialize_inputs(task_id, base_fail_tests)
                     plus_fail_tests = mbpp_serialize_inputs(task_id, plus_fail_tests)
-
+                
+                print (task_id,base_stat, base_fail_tests)
                 results["eval"][task_id].append(
                     {
                         "task_id": task_id,
