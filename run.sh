@@ -1,10 +1,10 @@
-Result_Path=/home/shirley/codes/evalplus/results-70b/
+Result_Path=./results-405b-pulsar/
 TMP_NAME=eval_llama31_1
 mkdir -p ${Result_Path}/${TMP_NAME}
 export TOGETHER_API_KEY=??
-python codegen/generate.py --model "meta-llama/Meta-Llama-3.1-70B-Instruct" \
+python codegen/generate.py --model "meta-llama/Meta-Llama-3.1-405B-Instruct" \
 --greedy --root ${Result_Path}/${TMP_NAME} \
---dataset humaneval --API together &> ${Result_Path}/${TMP_NAME}.log  #--backend vllm --tp 1
+--dataset humaneval --API pulsar #&> ${Result_Path}/${TMP_NAME}.log  #--backend vllm --tp 1
 
 # # Result_Path=/home/shirley/codes/evalplus/humaneval/eval_llama31_2/humaneval
 # Result_Path=/home/shirley/codes/evalplus/eval_llama31_2b/humaneval/

@@ -11,7 +11,7 @@ from rich.progress import (
     TextColumn,
     TimeElapsedColumn,
 )
-from server import generate_together 
+from server import generate_together, generate_pulsar
 import re
 def extract_python_code(text):
     # Use regular expression to match code block inside triple backticks
@@ -56,6 +56,7 @@ def codegen(
     id_range=None,
     version="default",
     resume=True,
+    API=None,
 ):
     task2nexist = {}
     if resume and target_path.endswith(".jsonl") and os.path.isfile(target_path):
@@ -120,14 +121,24 @@ def codegen(
                 # )
                 # messages = [{'role': 'user', 'content': prompt}]
                 temperature = 0
-                decoded = generate_together(
-                    "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
-                    prompt,
-                    cocurrency=1, 
-                    max_tokens = 2049,
-                    do_sample = (temperature != 0), 
-                    temperature = temperature
-                    )
+                if API == "together":
+                    decoded = generate_together(
+                        "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
+                        prompt,
+                        cocurrency=1, 
+                        max_tokens = 2049,
+                        do_sample = (temperature != 0), 
+                        temperature = temperature
+                        )
+                else:
+                    decoded = generate_pulsar(
+                        "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
+                        prompt,
+                        cocurrency=1, 
+                        max_tokens = 2049,
+                        do_sample = (temperature != 0), 
+                        temperature = temperature
+                        )
                 print (decoded[0][0])
                 outputs = [extract_python_code(decoded[0][0]),]
                 #import pdb;pdb.set_trace()
@@ -246,6 +257,7 @@ def main(
         resume=resume,
         id_range=id_range,
         version=version,
+        API = API
     )
 
 
