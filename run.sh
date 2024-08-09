@@ -2,7 +2,7 @@ Result_Path=/home/shirley/codes/evalplus/results-mbpp-8b/
 TMP_NAME=eval_llama31_2
 dataset=mbpp #humaneval
 mkdir -p ${Result_Path}/${TMP_NAME}
-export TOGETHER_API_KEY=485b6501ee67cc885f14bf500a77e9e0c696ce7c3967be1b44e1e6836061c7c2
+export TOGETHER_API_KEY=xx
 python codegen/generate.py --model "meta-llama/Meta-Llama-3.1-8B-Instruct" \
 --greedy --root ${Result_Path}/${TMP_NAME} \
 --dataset mbpp --API together &> ${Result_Path}/${TMP_NAME}.log  #--backend vllm --tp 1
