@@ -11,7 +11,17 @@ from rich.progress import (
     TextColumn,
     TimeElapsedColumn,
 )
-
+def extract_python_code(text):
+    # Use regular expression to match code block inside triple backticks
+    if "```python" in text:
+        pattern = r'```python(.*?)```'
+        match = re.search(pattern, text, re.DOTALL)
+        if match:
+            return match.group(1).strip()
+        else:
+            return text
+    else:
+        return text
 
 def construct_contract_prompt(prompt: str, contract_type: str, contract: str) -> str:
     if contract_type == "none":
@@ -111,6 +121,7 @@ def codegen(
                     solution = (
                         prompt + impl if model.is_direct_completion() else impl
                     )
+                    solution = extract_python_code(solution)
                     if target_path.endswith(".jsonl"):
                         with open(target_path, "a") as f:
                             f.write(
