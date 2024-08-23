@@ -143,51 +143,51 @@ def codegen(
                                 f.write(solution)
                         sidx += 1
 
-
-                elif API == "together":
-                    decoded = generate_together(
-                        "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
-                        prompt,
-                        cocurrency=1, 
-                        max_tokens = 2049,
-                        do_sample = (temperature != 0), 
-                        temperature = temperature
-                        )
                 else:
-                    decoded = generate_pulsar(
-                        "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
-                        prompt,
-                        cocurrency=1, 
-                        max_tokens = 2049,
-                        do_sample = (temperature != 0), 
-                        temperature = temperature
-                        )
-                print (decoded[0][0])
-                outputs = [extract_python_code(decoded[0][0]),]
-                #import pdb;pdb.set_trace()
-                #print (outputs)
-                assert outputs, "No outputs from model!"
-                for impl in outputs:
-                    if model is not None:
-                        solution = (prompt + impl if model.is_direct_completion() else impl)
-                    else:
-                        solution = impl
-
-                    if target_path.endswith(".jsonl"):
-                        with open(target_path, "a") as f:
-                            f.write(
-                                json.dumps({"task_id": task_id, "solution": solution})
-                                + "\n"
+                    if API == "together":
+                        decoded = generate_together(
+                            "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
+                            prompt,
+                            cocurrency=1, 
+                            max_tokens = 2049,
+                            do_sample = (temperature != 0), 
+                            temperature = temperature
                             )
                     else:
-                        with open(
-                            os.path.join(target_path, p_name, f"{sidx}.py"),
-                            "w",
-                            encoding="utf-8",
-                        ) as f:
-                            f.write(solution)
-                    sidx += 1
-                #import pdb;pdb.set_trace()
+                        decoded = generate_pulsar(
+                            "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
+                            prompt,
+                            cocurrency=1, 
+                            max_tokens = 2049,
+                            do_sample = (temperature != 0), 
+                            temperature = temperature
+                            )
+                    print (decoded[0][0])
+                    outputs = [extract_python_code(decoded[0][0]),]
+                    #import pdb;pdb.set_trace()
+                    #print (outputs)
+                    assert outputs, "No outputs from model!"
+                    for impl in outputs:
+                        if model is not None:
+                            solution = (prompt + impl if model.is_direct_completion() else impl)
+                        else:
+                            solution = impl
+
+                        if target_path.endswith(".jsonl"):
+                            with open(target_path, "a") as f:
+                                f.write(
+                                    json.dumps({"task_id": task_id, "solution": solution})
+                                    + "\n"
+                                )
+                        else:
+                            with open(
+                                os.path.join(target_path, p_name, f"{sidx}.py"),
+                                "w",
+                                encoding="utf-8",
+                            ) as f:
+                                f.write(solution)
+                        sidx += 1
+                    #import pdb;pdb.set_trace()
 
 
 def main(
