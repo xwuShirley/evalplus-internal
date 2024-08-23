@@ -114,14 +114,37 @@ def codegen(
             while sidx < n_samples:
                 prompt = task["prompt"].strip() + "\n"
 
-                # outputs = model.codegen(
-                #     prompt,
-                #     do_sample=not greedy,
-                #     num_samples=n_samples - sidx,
-                # )
-                # messages = [{'role': 'user', 'content': prompt}]
                 temperature = 0
-                if API == "together":
+                if API is None:
+                    
+                    outputs = model.codegen(
+                        prompt,
+                        do_sample=not greedy,
+                        num_samples=n_samples - sidx,
+                    )
+                    assert outputs, "No outputs from model!"
+                    for impl in outputs:
+                        solution = (
+                            prompt + impl if model.is_direct_completion() else impl
+                        )
+                        solution = extract_python_code(solution)
+                        if target_path.endswith(".jsonl"):
+                            with open(target_path, "a") as f:
+                                f.write(
+                                    json.dumps({"task_id": task_id, "solution": solution})
+                                    + "\n"
+                                )
+                        else:
+                            with open(
+                                os.path.join(target_path, p_name, f"{sidx}.py"),
+                                "w",
+                                encoding="utf-8",
+                            ) as f:
+                                f.write(solution)
+                        sidx += 1
+
+
+                elif API == "together":
                     decoded = generate_together(
                         "meta-llama/Meta-Llama-3.1-70B-Instruct-Turbo",
                         prompt,

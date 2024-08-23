@@ -10,7 +10,7 @@ See the code ```run.sh```
 For generation, 
 ```shell
 ## if running with model
-python codegen/generate.py --model "meta-llama/Meta-Llama-3.1-8B" --greedy --root eval_llama31_2 --dataset humaneval --backend vllm --tp 2 
+python codegen/generate.py --model "meta-llama/Meta-Llama-3.1-8B" --greedy --root eval_llama31_2 --dataset humaneval --backend vllm|hf|openai --tp 2 
 
 ## if running with togetherAI server
 python codegen/generate.py --model "meta-llama/Meta-Llama-3.1-8B" --greedy --root eval_llama31_2 --dataset humaneval --API together 

@@ -10,3 +10,4 @@ openai
 tree_sitter>=0.22.0
 tree-sitter-python
 stop_sequencer
+loguru
